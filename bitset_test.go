@@ -2,10 +2,11 @@ package bitset
 
 import (
 	"testing"
+	"time"
 )
 
 func TestInit(t *testing.T) {
-	bs := New(1000)
+	bs := New(1000, "/tmp/bitset.log")
 	// initially all bits should be zero
 	for i := uint64(0); i < 1000; i++ {
 		if bs.Get(i) {
@@ -15,7 +16,7 @@ func TestInit(t *testing.T) {
 }
 
 func TestGetSet(t *testing.T) {
-	bs := New(1000)
+	bs := New(1000, "/tmp/bitset.log")
 	if bs.Set(0) == true {
 		t.Error("Set on bit %d returned true when it should return false", 0)
 	}
@@ -31,7 +32,7 @@ func TestGetSet(t *testing.T) {
 
 func TestLargeSetGet(t *testing.T) {
 	size := uint64(1) << 35
-	bs := New(size)
+	bs := New(size, "/tmp/bitset.log")
 
 	positions := []uint64{0, 1, 10, 1000, 1 << 32, size - 1}
 	for _, position := range positions {
@@ -51,7 +52,7 @@ func TestLength(t *testing.T) {
 
 	sizes := []uint64{0, 1, 10, 1000, 1 << 32, 1 << 33}
 	for _, size := range sizes {
-		bs := New(size)
+		bs := New(size, "/tmp/bitset.log")
 		if bs.Length() != size {
 			t.Errorf("Length should be %d", size)
 		}
@@ -59,7 +60,7 @@ func TestLength(t *testing.T) {
 }
 
 func TestClear(t *testing.T) {
-	bs := New(1000)
+	bs := New(1000, "/tmp/bitset.log")
 	pos := uint64(1)
 	bs.Set(pos)
 
@@ -77,7 +78,7 @@ func TestClear(t *testing.T) {
 }
 
 func TestFlip(t *testing.T) {
-	bs := New(1000)
+	bs := New(1000, "/tmp/bitset.log")
 	pos := uint64(1)
 
 	if bs.Get(pos) {
